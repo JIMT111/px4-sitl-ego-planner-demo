@@ -51,38 +51,8 @@ def frange(start: float, stop: float, step: float) -> List[float]:
     return vals
 
 
-def walls_world_points(step: float, z_min: float, z_max: float) -> List[Point]:
-    # Matches PX4 Gazebo Sim world Tools/simulation/gz/worlds/walls.sdf.
-    boxes = [
-        (5.0, 0.0, 7.5, 1.0, 20.0, 15.0),
-        (-3.0, 5.0, 7.5, 10.0, 1.0, 15.0),
-        (13.0, -10.0, 7.5, 17.0, 1.0, 15.0),
-        (12.0, 0.0, 7.5, 1.0, 20.0, 15.0),
-    ]
-    points: List[Point] = []
-    for box in boxes:
-        points.extend(box_surface_points(*box, step=step, z_min=z_min, z_max=z_max))
-    return points
-
-
-def gate_world_points(step: float, z_min: float, z_max: float) -> List[Point]:
-    # EGO/ROS planning frame: x east/left-right, y forward, z up.
-    # This matches config/gazebo_worlds/uav_gate.sdf after Gazebo<->PX4 frame use:
-    #   Gazebo X ~= EGO y, Gazebo Y ~= EGO x.
-    # Wall is at EGO y=3 m, with a doorway gap from x=0.5..2.5 m.
-    boxes = [
-        (-2.25, 3.0, 1.25, 5.5, 0.4, 2.5),
-        (4.25, 3.0, 1.25, 3.5, 0.4, 2.5),
-    ]
-    points: List[Point] = []
-    for box in boxes:
-        points.extend(box_surface_points(*box, step=step, z_min=z_min, z_max=z_max))
-    return points
-
-
 def single_wall_points(args) -> List[Point]:
     # One simple vertical wall in the EGO/ROS planning frame.
-    # Defaults: centered near x=1 m, spanning y=-2..2 m, and z=0.1..2.8 m.
     return list(
         box_surface_points(
             args.single_wall_x,
@@ -104,12 +74,8 @@ class VirtualObstacleCloud(Node):
         self.args = args
         if args.scenario == "none":
             self.points = []
-        elif args.scenario == "single_wall":
-            self.points = single_wall_points(args)
-        elif args.scenario == "gate":
-            self.points = gate_world_points(args.step, args.z_min, args.z_max)
         else:
-            self.points = walls_world_points(args.step, args.z_min, args.z_max)
+            self.points = single_wall_points(args)
         self.pub = self.create_publisher(PointCloud2, args.topic, 10)
         self.summary_path = Path(args.summary) if args.summary else None
         self.count = 0
@@ -157,7 +123,7 @@ def main():
     parser.add_argument("--topic", default="/sitl/virtual_obstacles")
     parser.add_argument("--frame-id", default="world")
     parser.add_argument("--rate-hz", type=float, default=5.0)
-    parser.add_argument("--scenario", choices=["walls", "single_wall", "gate", "none"], default="walls")
+    parser.add_argument("--scenario", choices=["single_wall", "none"], default="single_wall")
     parser.add_argument("--step", type=float, default=0.6)
     parser.add_argument("--z-min", type=float, default=0.2)
     parser.add_argument("--z-max", type=float, default=2.4)

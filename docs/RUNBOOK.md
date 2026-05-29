@@ -2,6 +2,8 @@
 
 本文档记录如何复现 PX4 SITL + ROS2 + EGO-Planner 避障闭环。命令保留原始英文接口名，解释尽量使用中文。
 
+复现前先阅读 [ENVIRONMENT.md](ENVIRONMENT.md)，确认版本和运行条件。最重要的边界是：本项目只向 PX4 SITL 的 `/fmu/in/*` 发命令，不向真实 Pixhawk 6C 发 Offboard 控制命令。
+
 假设 Ubuntu 机器上已经准备好：
 
 - ROS2 Jazzy：`/opt/ros/jazzy/setup.bash`
@@ -17,6 +19,30 @@ export PX4_MSGS_WS=$HOME/px4_msgs_ws
 export EGO_WS=$HOME/ros2_ego_ws
 export UAV_DEMO=$HOME/uav_sitl_ego_demo
 ```
+
+如果还没有项目目录：
+
+```bash
+git clone https://github.com/JIMT111/px4-sitl-ego-planner-demo.git "$UAV_DEMO"
+```
+
+为什么跑：把本仓库的 world、launch、脚本和证据文件放到复现机器上。
+
+通过标准：`ls "$UAV_DEMO"` 能看到 `config/`、`docs/`、`scripts/` 和 `evidence/`。
+
+失败说明：通常是网络、GitHub 权限或目录已存在问题。
+
+把单墙 world 放到 PX4 可读取的位置：
+
+```bash
+cp "$UAV_DEMO/config/single_wall.sdf" "$PX4_DIR/Tools/simulation/gz/worlds/single_wall.sdf"
+```
+
+为什么跑：`PX4_GZ_WORLD=single_wall` 会到 PX4 的 Gazebo worlds 目录里找 `single_wall.sdf`。
+
+通过标准：`test -f "$PX4_DIR/Tools/simulation/gz/worlds/single_wall.sdf"` 返回成功。
+
+失败说明：`PX4_DIR` 路径不对，或者 PX4 checkout 不是 Gazebo Sim 版本结构。
 
 ## 1. 启动 PX4 SITL 和 Gazebo
 
@@ -182,6 +208,21 @@ python3 "$UAV_DEMO/scripts/publish_bspline_path_for_rviz.py" \
 通过标准：RViz 中能看到路径绕过墙，而不是穿过墙中间。
 
 ## 9. 把 EGO 命令桥接到 PX4 SITL
+
+如果 PX4 因 `gcs_connection_lost` 或健康检查拒绝 arm，可以单独开一个终端发送 SITL-only GCS heartbeat：
+
+```bash
+python3 "$UAV_DEMO/scripts/sitl_gcs_heartbeat.py" \
+  --host 127.0.0.1 \
+  --port 18570 \
+  --duration 60
+```
+
+为什么跑：PX4 SITL 有地面站连接健康检查。这个脚本只发 MAVLink heartbeat，不 arm、不切模式、不发 setpoint。
+
+通过标准：PX4 `vehicle_status` 里 `pre_flight_checks_pass` 变为 true，且脚本结束时打印 `sent_gcs_heartbeats=...`。
+
+失败说明：端口不对、PX4 SITL 没启动，或当前 SITL MAVLink 配置不是 `18570`。
 
 启动命令桥：
 

@@ -46,6 +46,7 @@ config/
   single_wall.sdf                   # 单墙 Gazebo world
 docs/
   RUNBOOK.md                        # 复现实验命令和通过标准
+  ENVIRONMENT.md                    # 已验证版本、运行条件和自查命令
   INTERVIEW_NOTES.md                # 面试讲解笔记
 evidence/
   offboard_closed_loop_summary.json
@@ -59,8 +60,21 @@ scripts/
   px4_sitl_ego_command_bridge.py
   publish_bspline_path_for_rviz.py
   sitl_gcs_heartbeat.py
-  sitl_real_offboard_square.py
 ```
+
+## 如何复现
+
+先看 [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)，确认 Ubuntu、ROS2、Gazebo、PX4、`px4_msgs` 和 EGO-Planner 的版本/工作空间。再按 [docs/RUNBOOK.md](docs/RUNBOOK.md) 从 PX4 SITL、uXRCE-DDS、odometry、障碍物点云、EGO 规划、RViz 可视化、PX4 Offboard 桥接依次执行。
+
+最小准备动作：
+
+```bash
+git clone https://github.com/JIMT111/px4-sitl-ego-planner-demo.git ~/uav_sitl_ego_demo
+export UAV_DEMO=$HOME/uav_sitl_ego_demo
+cp "$UAV_DEMO/config/single_wall.sdf" "$PX4_DIR/Tools/simulation/gz/worlds/single_wall.sdf"
+```
+
+如果 EGO-Planner 的 launch 文件路径和本项目不同，用 `config/advanced_param.launch.py` 的参数内容对照合并，不要盲目覆盖自己的工作空间。
 
 ## 已验证内容
 
