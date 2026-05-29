@@ -16,6 +16,17 @@ Gazebo 仿真无人机、传感器、障碍物
 
 ## 项目结果
 
+本仓库包含两条互相独立的验证线：
+
+1. PX4 SITL + ROS2 EGO-Planner 避障闭环，见本 README 和 [docs/RUNBOOK.md](docs/RUNBOOK.md)。
+2. FAST-LIO2 LiDAR+IMU rosbag 离线 SIL 验证，见 [docs/FASTLIO2_SIL_RUNBOOK.md](docs/FASTLIO2_SIL_RUNBOOK.md)。
+
+FAST-LIO2 这条线只验证定位/建图，不接 PX4，不发布 `/fmu/in/*`，不 arm、不 takeoff、不 offboard。2026-05-29 的验证报告见 [evidence/fastlio2_sil_validation_20260529.md](evidence/fastlio2_sil_validation_20260529.md)，RViz 证据如下：
+
+![FAST-LIO2 SIL RViz 截图](evidence/fastlio2_sil_rviz_20260529.png)
+
+## PX4 SITL + EGO-Planner 项目结果
+
 最终验证场景是一堵墙放在起点和终点之间：
 
 - 起点：`(3, 0, 1)`，ROS/ENU 坐标系
@@ -43,12 +54,17 @@ PX4 Offboard 闭环证据见 [evidence/offboard_closed_loop_summary.json](eviden
 ```text
 config/
   advanced_param.launch.py          # 支持 obstacles_inflation 和 lambda_fitness 参数的 EGO launch 文件
+  fast_lio_mid360s.example.yaml     # MID360S + FAST-LIO2 离线 SIL 示例配置
+  rviz_nav_admission.rviz           # LIO 点云、轨迹、TF 的 RViz 可视化配置
   single_wall.sdf                   # 单墙 Gazebo world
 docs/
   RUNBOOK.md                        # 复现实验命令和通过标准
   ENVIRONMENT.md                    # 已验证版本、运行条件和自查命令
+  FASTLIO2_SIL_RUNBOOK.md           # FAST-LIO2 LiDAR+IMU rosbag 离线验证手册
   INTERVIEW_NOTES.md                # 面试讲解笔记
 evidence/
+  fastlio2_sil_validation_20260529.md
+  fastlio2_sil_rviz_20260529.png
   offboard_closed_loop_summary.json
   single_wall_x2_start3_goalneg3_bspline.yaml
   single_wall_x2_start3_goalneg3_sampling.txt
@@ -64,7 +80,9 @@ scripts/
 
 ## 如何复现
 
-先看 [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)，确认 Ubuntu、ROS2、Gazebo、PX4、`px4_msgs` 和 EGO-Planner 的版本/工作空间。再按 [docs/RUNBOOK.md](docs/RUNBOOK.md) 从 PX4 SITL、uXRCE-DDS、odometry、障碍物点云、EGO 规划、RViz 可视化、PX4 Offboard 桥接依次执行。
+PX4 SITL + EGO-Planner 复现：先看 [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)，确认 Ubuntu、ROS2、Gazebo、PX4、`px4_msgs` 和 EGO-Planner 的版本/工作空间。再按 [docs/RUNBOOK.md](docs/RUNBOOK.md) 从 PX4 SITL、uXRCE-DDS、odometry、障碍物点云、EGO 规划、RViz 可视化、PX4 Offboard 桥接依次执行。
+
+FAST-LIO2 离线 SIL 复现：按 [docs/FASTLIO2_SIL_RUNBOOK.md](docs/FASTLIO2_SIL_RUNBOOK.md) 录制或准备 MID360S LiDAR+IMU rosbag，再回放给 FAST-LIO2，检查 `/Odometry`、`/path`、`/cloud_registered`、`/tf`、RViz 和连续性。
 
 最小准备动作：
 

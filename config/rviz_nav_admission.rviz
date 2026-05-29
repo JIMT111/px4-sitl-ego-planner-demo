@@ -1,0 +1,158 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Enabled: true
+      Name: Ground grid
+      Plane: XY
+      Plane Cell Count: 24
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: MID-360S / FAST-LIO map cloud
+      Topic:
+        Value: /cloud_registered
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 5
+      Style: Points
+      Size (Pixels): 3
+      Size (m): 0.025
+      Alpha: 0.9
+      Color Transformer: FlatColor
+      Color: 80; 220; 255
+      Decay Time: 12
+      Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: D455 obstacle points in LIO view
+      Topic:
+        Value: /viz/d455_obstacle_points_camera_init
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 5
+      Style: Spheres
+      Size (Pixels): 4
+      Size (m): 0.04
+      Alpha: 1
+      Color Transformer: FlatColor
+      Color: 255; 80; 80
+      Decay Time: 5
+      Value: true
+    - Class: rviz_default_plugins/Path
+      Enabled: true
+      Name: LIO odometry path
+      Topic:
+        Value: /viz/lio_path
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 5
+      Color: 70; 255; 120
+      Line Style: Lines
+      Line Width: 0.05
+      Value: true
+    - Class: rviz_default_plugins/Path
+      Enabled: true
+      Name: EGO shadow setpoint path
+      Topic:
+        Value: /viz/shadow_setpoint_path
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 5
+      Color: 255; 220; 60
+      Line Style: Lines
+      Line Width: 0.04
+      Value: true
+    - Class: rviz_default_plugins/Odometry
+      Enabled: true
+      Name: Virtual executor odometry
+      Topic:
+        Value: /virtual_executor/odom
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 10
+      Shape: Arrow
+      Color: 40; 160; 255
+      Keep: 200
+      Position Tolerance: 0.02
+      Angle Tolerance: 0.02
+      Value: true
+    - Class: rviz_default_plugins/Path
+      Enabled: true
+      Name: Virtual executor followed path
+      Topic:
+        Value: /virtual_executor/path
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 10
+      Color: 40; 160; 255
+      Line Style: Lines
+      Line Width: 0.08
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Drone and latest setpoint markers
+      Topic:
+        Value: /viz/nav_markers
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 5
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Virtual executor markers
+      Topic:
+        Value: /virtual_executor/markers
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 10
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 18; 18; 22
+    Fixed Frame: camera_init
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 8
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0.5
+      Name: Current View
+      Pitch: 0.65
+      Target Frame: <Fixed Frame>
+      Yaw: 0.75
+Window Geometry:
+  Height: 900
+  Width: 1500
+  X: 60
+  Y: 50
