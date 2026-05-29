@@ -1,20 +1,20 @@
-PX4 SITL + ROS2 EGO-Planner single-wall avoidance evidence
+PX4 SITL + ROS2 EGO-Planner 单墙避障采样证据
 
-Scenario:
-  start: (3.0, 0.0, 1.0) ENU
-  goal:  (-3.0, 0.0, 1.0) ENU
-  wall: center=(2.0, 0.0, 1.45), size=(0.3, 1.2, 2.7)
-  raw wall bounds: x=[1.85,2.15], y=[-0.6,0.6], z=[0.2,2.8]
-  inflated wall bounds: x=[1.751,2.249], y=[-0.699,0.699], z=[0.1,2.9]
+场景：
+  起点： (3.0, 0.0, 1.0)，ENU 坐标
+  终点： (-3.0, 0.0, 1.0)，ENU 坐标
+  墙体： center=(2.0, 0.0, 1.45), size=(0.3, 1.2, 2.7)
+  原始墙体范围： x=[1.85,2.15], y=[-0.6,0.6], z=[0.2,2.8]
+  膨胀墙体范围： x=[1.751,2.249], y=[-0.699,0.699], z=[0.1,2.9]
 
-Sampling check:
-  bspline file: evidence/single_wall_x2_start3_goalneg3_bspline.yaml
-  control_points: 19
-  knots: 23
-  sample_count: 401
-  control_x_range: [-2.679, 2.872]
-  control_y_range: [-0.398, 1.630]
-  samples_inside_inflated_wall: 0
-  min_abs_y_when_x_in_wall_band: 1.302
-  closest_wall_band_sample: (2.246, 1.302, 1.000)
-  passed: True
+B-spline 采样检查：
+  文件： evidence/single_wall_x2_start3_goalneg3_bspline.yaml
+  控制点数量： 19
+  knot 数量： 23
+  采样点数量： 401
+  控制点 x 范围： [-2.679, 2.872]
+  控制点 y 范围： [-0.398, 1.630]
+  落入膨胀墙体的采样点数量： 0
+  轨迹经过墙体 x 范围时的最近 |y|： 1.302
+  最近墙体 x 范围的采样点： (2.246, 1.302, 1.000)
+  结论： 通过
