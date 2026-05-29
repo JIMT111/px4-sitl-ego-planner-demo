@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.venv/
+venv/
+
+# Large or machine-local runtime artifacts
+*.bag
+*.db3
+*.mcap
+*.ulg
+*.log
+*.jsonl
+*.mp4
+*.mov
+
+# Keep curated evidence, ignore ad-hoc screenshots elsewhere.
+outputs/
+tmp_*
+remote_patch/
+
+# This project intentionally stages only the curated SITL files.

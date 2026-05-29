@@ -1,0 +1,41 @@
+{
+  "duration_requested_s": 45.0,
+  "duration_wall_s": 64.35880446434021,
+  "active_duration_s": 45.22458100318909,
+  "command_payload_count": 4522,
+  "invalid_payload_count": 0,
+  "setpoint_count": 892,
+  "offboard_count": 892,
+  "vehicle_command_count": 3,
+  "mode_command_sent": true,
+  "arm_command_sent": true,
+  "land_command_sent": true,
+  "ever_armed": true,
+  "ever_offboard_nav": true,
+  "ever_control_offboard": true,
+  "max_pos_norm": 2.224970347193057,
+  "max_vel_norm": 0.0,
+  "max_acc_norm": 0.0,
+  "max_displacement_m": 2.2446872313453317,
+  "max_position_error_m": 2.2576929216925006,
+  "latest_local": {
+    "xy_valid": true,
+    "z_valid": true,
+    "dead_reckoning": false,
+    "x": 0.005129602737724781,
+    "y": 2.0001895427703857,
+    "z": -1.014678955078125
+  },
+  "latest_status": {
+    "arming_state": 2,
+    "nav_state": 14,
+    "failsafe": false,
+    "pre_flight_checks_pass": true
+  },
+  "latest_control_mode": {
+    "flag_control_offboard_enabled": true
+  },
+  "published_to_real_fmu_in": true,
+  "sitl_only": true,
+  "passed": true
+}

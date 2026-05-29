@@ -1,0 +1,20 @@
+PX4 SITL + ROS2 EGO-Planner single-wall avoidance evidence
+
+Scenario:
+  start: (3.0, 0.0, 1.0) ENU
+  goal:  (-3.0, 0.0, 1.0) ENU
+  wall: center=(2.0, 0.0, 1.45), size=(0.3, 1.2, 2.7)
+  raw wall bounds: x=[1.85,2.15], y=[-0.6,0.6], z=[0.2,2.8]
+  inflated wall bounds: x=[1.751,2.249], y=[-0.699,0.699], z=[0.1,2.9]
+
+Sampling check:
+  bspline file: evidence/single_wall_x2_start3_goalneg3_bspline.yaml
+  control_points: 19
+  knots: 23
+  sample_count: 401
+  control_x_range: [-2.679, 2.872]
+  control_y_range: [-0.398, 1.630]
+  samples_inside_inflated_wall: 0
+  min_abs_y_when_x_in_wall_band: 1.302
+  closest_wall_band_sample: (2.246, 1.302, 1.000)
+  passed: True
